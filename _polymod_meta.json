@@ -1,0 +1,61 @@
+{
+  "title": "Seek's Cool Deltarune Mod(V-Slice Port)",
+  "description": "Port of Seek's Cool Deltarune Mod to the base game (V-Slice) engine through softcode!",
+  "homepage": "https://ninja-muffin24.itch.io/funkin",
+  "contributors": [
+    {
+      "name": "Requazar",
+      "role": "Port Creator",
+      "url": "https://youtube.com/@requazar"
+    },
+    {
+      "name": "seeksstuff",
+      "role": "almost everything",
+      "url": "https://www.youtube.com/@Seeks_stuff"
+    },
+    {
+      "name": "Swagmannick",
+      "role": "Background Artist",
+      "url": "https://x.com/SwagmanNicke"
+    },
+    {
+      "name": "Revtrosity",
+      "role": "Voices Rouxls and Seam",
+      "url": "https://www.youtube.com/channel/UC6_ZyTS_LCIMuB6aV4EabQg"
+    },
+    {
+      "name": "Omindapt",
+      "role": "Voices Ralsei and (???)",
+      "url": "https://www.youtube.com/channel/UCxJofxVgAQptbuhAkfz5MEg"
+    },
+    {
+      "name": "Whespir",
+      "role": "Voices Lancer",
+      "url": "https://www.youtube.com/channel/UCzuy1Tt5PZm-LYR6syTQBBw"
+    },
+    {
+      "name": "Oniomn",
+      "role": "Voices secret boss",
+      "url": "https://www.youtube.com/c/oniomn"
+    },
+    {
+      "name": "Gibby",
+      "role": "Playjester",
+      "url": "x.com/The_Gibbinatior"
+    },
+    {
+      "name": "Toby Fox",
+      "role": "Created Deltarune",
+      "url": "https://www.deltarune.com"
+    },
+    {
+      "name": "Juno Songs",
+      "role": "Voices Spamton",
+      "url": "https://www.youtube.com/@JunoSongs"
+    }
+    
+  ],
+  "api_version": "0.6.4",
+  "mod_version": "3.1.0",
+  "license": "Apache-2.0"
+}
