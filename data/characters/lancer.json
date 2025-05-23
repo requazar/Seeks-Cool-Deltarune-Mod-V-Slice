@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "name": "Lancer(In My Way)",
+  "assetPath": "characters/lancer",
+  "startingAnimation": "idle",
+  "singTime": 4,
+  "flipX": true,
+  "isPixel": false,
+  "healthIcon": {
+    "id": "lancer-sad"
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "lancer idle",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        166,
+        102
+      ],
+      "looped": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "lancer left",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        160,
+        101
+      ],
+      "looped": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "lancer down",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        176,
+        100
+      ],
+      "looped": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "lancer up",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        161,
+        96
+      ],
+      "looped": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "lancer right",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        168,
+        101
+      ],
+      "looped": false
+    },
+    {
+      "name": "ouch",
+      "prefix": "lancer ouch",
+      "frameIndices": [],
+      "frameRate": 16,
+      "offsets": [
+        160,
+        100
+      ],
+      "looped": false
+    }
+  ],
+  "offsets": [
+    40,
+    30
+  ],
+  "cameraOffsets": [
+    240,
+    90
+  ],
+  "scale": 0.8
+}
