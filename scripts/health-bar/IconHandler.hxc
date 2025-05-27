@@ -1,0 +1,368 @@
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.math.FlxMath;
+import flixel.util.FlxSave;
+import flixel.ui.FlxBar;
+import flixel.util.FlxTimer;
+
+import funkin.Conductor;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.Module;
+import funkin.modding.module.ModuleHandler;
+import funkin.play.PlayState;
+import funkin.play.character.BaseCharacter;
+import funkin.play.character.CharacterDataParser;
+import funkin.play.character.CharacterType;
+import funkin.play.components.HealthIcon;
+import funkin.save.Save;
+import funkin.util.Constants;
+
+import haxe.ds.StringMap;
+import lime.utils.Assets;
+import openfl.display.BitmapData;
+
+import StringTools;
+
+class SCDMIcons extends Module
+{
+	/*
+		CerulSymph's icon handler. Adds in icon based healthbar colors and bopping icons.
+		Health bar code based on nubz4lif's Icon Colored Health Bar, which is in turn based on Psych Engine's.
+	*/
+
+	function new() {
+		super("SCDMIcons", 9999);
+	}
+
+	static var healthPlayer = Constants.COLOR_HEALTH_BAR_GREEN;
+    static var healthOpponent = Constants.COLOR_HEALTH_BAR_RED;
+
+    var iconGetSprite:FunkinSprite;
+
+    public static var bfResult:Int;
+    public static var dadResult:Int;
+
+    public static var goodEnding:Bool = false;
+    public static var startBopping:Bool = false;
+
+    public static var customIcons:Bool = true;
+
+    var iconRes = 150;
+
+    // This can be used to set colors for certain icons, or in the case of Macy and Adeleine's, fix an issue where their default color is interpreted wrong by the game.
+    static var colorExceptions:Map<String, Int> = [
+        "parents" => 0xFFC45EAE,
+        "parents-christmas" => 0xFFC45EAE,
+        "kazuki-fr" => 0xFF7FBFFF,
+        "macy" => 0xFF26D87A,
+        "adeleine" => 0xFF9BFEDA
+    ];
+
+    static var iconList:Array<String> = [];
+
+    static var colorMap:Map<String, Int> = ["dummy" => 0xFFFFFFFF];
+
+    static var savedIcons:Array<String> = ["face", "face"];
+    var cerulSymphSave:FlxSave = new FlxSave();
+
+    var usingOld:Bool = false;
+
+    function initIconList(?fresh:Bool = false)
+    {
+        if (fresh)
+        {
+            iconList = [];
+            colorMap.clear();
+        }
+        cerulSymphSave.bind("CerulSymph", "ItIsIWeeg");
+        if (cerulSymphSave.data.iconColors == null)
+        {
+            cerulSymphSave.data.iconColors = ["dummy" => null];
+        }
+        if (!fresh) colorMap = cerulSymphSave.data.iconColors;
+        trace("COLORS SAVED SUCCESSFULLY! LOADED COLORS: " + colorMap);
+
+        iconGetSprite = new FunkinSprite(9999, 9999);
+        FlxG.state.add(iconGetSprite);
+        trace("GETTING ICON LIST!!");
+        var assetList = Assets.list();
+        var iconFilter = function(a:String) {
+            return (StringTools.startsWith(a, 'assets/images/icons/') && StringTools.endsWith(a, '.png'));
+        };
+
+        var tempIconList = assetList.filter(iconFilter);
+
+        if (tempIconList.length <= iconList.length)
+        {
+            trace("EVERYTHING HERE'S LOADED ALREADY, GO BACK!");
+            return;
+        }
+
+        for(i in 0...tempIconList.length)
+        {
+            var adjustedName = StringTools.replace(tempIconList[i], "assets/images/icons/icon-", "").split(".")[0];
+            if (!iconList.contains(adjustedName)) iconList.push(adjustedName);
+        }
+
+        trace("ICON LIST: " + iconList);
+        for (icon in iconList)
+        {
+            if (colorMap.exists(icon)) continue;
+
+            if (colorExceptions.exists(icon))
+            {
+                colorMap.set(icon, colorExceptions.get(icon));
+                continue;
+            }
+
+
+            iconGetSprite.loadGraphic(Paths.image("icons/icon-" + icon));
+            trace("LOADED IMAGE FOR " + icon + "!");
+
+            colorMap.set(icon, dominantColor(iconGetSprite, 1));
+            trace("COLOR FOR " + icon + " IS " + colorMap.get(icon));
+        }
+
+        cerulSymphSave.data.iconColors = colorMap;
+        cerulSymphSave.close();
+    }
+
+    function loadCustomIcon(icon:HealthIcon):Void
+    {
+        if (!customIcons) return;
+        var imgPath = Paths.image("icons/icon-" + icon.characterId + '-cerulean');
+        if (Assets.exists(imgPath)) initCustomIcon(icon, icon.characterId + "-cerulean", icon.isPixel);
+    }
+
+    function initCustomIcon(icon:HealthIcon, name:String, ?pixel:Bool = false, ?p2:Bool = false)
+    {
+        icon.characterId = name;
+        icon.isPixel = pixel;
+
+        icon.loadCharacter(icon.characterId);
+        updateHealthBarColors();
+        if (p2 && goodEnding) initGood(icon);
+    }
+
+    function updateHealthBarColors(?same:Bool = true) {
+        var colors = getIconColors(same);
+        if (!healthColorEnabled)
+        {
+            PlayState.instance.healthBar.createFilledBar(colors[0], colors[1]);
+            PlayState.instance.health += 0.00001;
+        }
+        //if (ModuleHandler.getModule("TimeBarCerulean").scriptGet("inPlay")) ModuleHandler.getModule("TimeBarCerulean").scriptCall("updateColors");
+    }
+
+    function getIconColors(?same:Bool = false):Array<Int>
+    {
+        var bfColor = (PlayState.instance.iconP1 == null ? 0xFF66FF33 : colorMap.get(PlayState.instance.iconP1.characterId));
+        var dadColor = ((PlayState.instance.iconP2 == null) ? 0xFFFF0000 : colorMap.get(PlayState.instance.iconP2.characterId));
+        trace("GOT THESE COLORS: " + dadColor + " - " + PlayState.instance.iconP2.characterId + "(" + colorMap.exists(PlayState.instance.iconP2.characterId) + "), " + bfColor + " - " + PlayState.instance.iconP1.characterId + "(" + colorMap.exists(PlayState.instance.iconP1.characterId) + ")");
+
+        bfResult = bfColor;
+        dadResult = dadColor;
+
+        //savedIcons = [PlayState.instance.iconP2.characterId, PlayState.instance.iconP1.characterId];
+
+        if (bfColor == dadColor && same)
+        {
+            dadColor = 0xFFFF0000;
+        }
+
+        return [dadColor, bfColor];
+    }
+
+    function dominantColor(sprite:FlxSprite, ?resMult:Float)
+        {
+            if(sprite == null) return;
+
+            // planned to be used for when character change stuff is added
+            resMult = resMult != null ? resMult : 1;
+    
+            var res2 = Math.min(iconRes, sprite.frameWidth);
+            var res1 = Math.max(iconRes, sprite.frameWidth);
+
+            var mult:Float = Math.min(1,(res1 / res2) * resMult);
+
+            var countByColor:Array<Int> = [];
+            var colorById:Array<Int> = [];
+            for(col in 0...(sprite.frameWidth)*mult) {
+                for(row in 0...(sprite.frameHeight)*mult) {
+                    var colorOfThisPixel:Int = sprite.pixels.getPixel32(col * mult, row * mult);
+                    if(colorOfThisPixel != 0) {
+                        var colorId = colorById.indexOf(colorOfThisPixel);
+                        if(colorId != -1) {
+                            countByColor[colorId] = countByColor[colorId] + 1;
+                        } else {
+                            var id = colorById.length;
+                            colorById[id] = colorOfThisPixel;
+                            countByColor[id] = 1;
+                        }
+                    }
+                }
+            }
+    
+            var maxCount:Int = 0;
+            var maxKey:Int = 0; //after the loop this will store the max color
+            for(color in colorById) {
+                var id = colorById.indexOf(color);
+                var count = countByColor[id] != null ? countByColor[id] : 0;
+                if(id != -1 && count > maxCount && color != 0xFF000000 && color != 0x00FFFFFF) {
+                    maxCount = count;
+                    maxKey = color;
+                }
+            }
+            countByColor = [];
+            colorById = [];
+            return maxKey;
+        }
+
+	var inPlay = false;
+    public static var healthColorEnabled:Bool = false;
+	override function onStateChangeBegin(ev:ScriptEvent) {
+		super.onStateChangeBegin(ev);
+        goodEnding = false;
+		inPlay = false;
+	}
+
+	override function onStateChangeEnd(ev:ScriptEvent) {
+		super.onStateChangeEnd(ev);
+        initIconList();
+		inPlay = Std.isOfType(FlxG.state, PlayState);
+		if (PlayState.instance != null && inPlay) {
+			onPlayStateEnter();
+			return;
+		}
+	}
+
+    function onBeatHit(event:UpdateScriptEvent):Void
+    {
+        if (PlayState.instance == null) return;
+        if (!PlayState.instance.isInCountdown) return;
+        var bop = (event.beat % 2 == 0 ? -15 : 15);
+        if (PlayState.instance.iconP1 != null) PlayState.instance.iconP1.bopAngle = bop;
+        if (PlayState.instance.iconP2 != null) PlayState.instance.iconP2.bopAngle = bop;
+    }
+
+    function onPlayStateEnter() {
+        usingOld = false;
+        arleCheck();
+        if (goodEnding && PlayState.instance.iconP2 != null)
+        {
+            initGood(PlayState.instance.iconP2);
+        }
+        updateHealthBarColors(true);
+
+        if (PlayState.instance.iconP1 != null) PlayState.instance.iconP1.bopAngle = 15;
+        if (PlayState.instance.iconP2 != null) PlayState.instance.iconP2.bopAngle = 15;
+    }
+
+    function initGood(icon)
+    {
+        if (!icon.isLegacyStyle)
+        {
+            goodEndNewSprite(icon);
+        }
+        else
+        {
+            goodEndOldSprite(icon);
+        }
+    }
+
+    function onUpdate(event)
+    {
+        super.onUpdate(event);
+        if (PlayState.instance == null) return;
+        if (PlayState.instance.iconP1 == null) return;
+        if (FlxG.keys.justPressed.NINE) toggleWeegMod();
+        if (colorMap.get(PlayState.instance.iconP1.characterId) != bfResult) updateHealthBarColors(true);
+        if (savedIcons[1] != PlayState.instance.iconP1.characterId)
+        {
+            loadCustomIcon(PlayState.instance.iconP1);
+            savedIcons[1] == PlayState.instance.iconP1.characterId;
+        }
+        if (savedIcons[0] != PlayState.instance.iconP2.characterId)
+        {
+            loadCustomIcon(PlayState.instance.iconP2);
+            savedIcons[0] == PlayState.instance.iconP2.characterId;
+        }
+    }
+
+    function toggleWeegMod()
+    {
+        if (PlayState.instance.iconP2 == null) return;
+        if (StringTools.endsWith(PlayState.instance.iconP2.characterId, "-old"))
+        {
+            initCustomIcon(PlayState.instance.iconP2, StringTools.replace(PlayState.instance.iconP2.characterId, "-old", ""), PlayState.instance.iconP2.isPixel, true);
+        }
+        else if (Assets.exists(Paths.image("icons/icon-" + PlayState.instance.iconP2.characterId + "-old")))
+        {
+            initCustomIcon(PlayState.instance.iconP2, PlayState.instance.iconP2.characterId + "-old", PlayState.instance.iconP2.isPixel, true);
+        }
+
+        FlxTimer.wait(0.001, () -> fixIcons());
+    }
+
+    function fixIcons()
+    {
+        usingOld = !usingOld;
+        if (PlayState.instance.iconP1.characterId == 'bf-old')
+        {
+            switch (PlayState.instance.currentStage.getBoyfriend().getHealthIconId())
+            {
+                case 'macy': initCustomIcon(PlayState.instance.iconP1, 'macy' + (usingOld ? '-old' : ""), false);
+                case 'athena': initCustomIcon(PlayState.instance.iconP1, 'athena' + (usingOld ? '-old' : ""), false);
+                case 'kazuki': initCustomIcon(PlayState.instance.iconP1, 'kazuki' + (usingOld ? '-old' : ""), false);
+            }
+        }
+
+        loadCustomIcon(PlayState.instance.iconP2);
+        loadCustomIcon(PlayState.instance.iconP1);
+    }
+
+    function arleCheck()
+    {
+        // Checks whether DA! Arle is enabled, and if so replaces her normal outfit with it.
+        if (PlayState.instance.currentStage.getDad() == null) return;
+        if (Save.instance.modOptions.get("CeruleanSymphony").daArle && PlayState.instance.currentStage.getDad().characterId == 'arle')
+        {
+            var arle:BaseCharacter = PlayState.instance.currentStage.getDad(true);
+            arle = CharacterDataParser.fetchCharacter('arle-da');
+            arle.characterType = CharacterType.DAD;
+            PlayState.instance.currentStage.addCharacter(arle, CharacterType.DAD);
+        }
+
+        /* // Now do the same for Bowie over BF. -- SAVING THIS FOR A FUTURE UPDATE !!!
+        if (PlayState.instance.currentStage.getBoyfriend() == null) return;
+        if (Save.instance.modOptions.get("CeruleanSymphony").bowieBf && PlayState.instance.currentStage.getBoyfriend().characterId == 'bf')
+        {
+            var bowie:BaseCharacter = PlayState.instance.currentStage.getBoyfriend(true);
+            bowie = CharacterDataParser.fetchCharacter('bowie');
+            bowie.characterType = CharacterType.BF;
+            PlayState.instance.currentStage.addCharacter(bowie, CharacterType.BF);
+        }*/
+    }
+
+    function goodEndNewSprite(icon):Void
+    {
+        icon.animation.addByPrefix('idle', 'idle', 24, true);
+        icon.animation.addByPrefix('winning', 'losing', 24, true);
+        icon.animation.addByPrefix('losing', 'winning', 24, true);
+        icon.animation.addByPrefix('toWinning', 'toLosing', 24, false);
+        icon.animation.addByPrefix('toLosing', 'toWinning', 24, false);
+        icon.animation.addByPrefix('fromWinning', 'fromLosing', 24, false);
+        icon.animation.addByPrefix('fromLosing', 'fromWinning', 24, false);
+    }
+
+    function goodEndOldSprite(icon):Void
+    {
+        icon.animation.add('idle', [0], 0, false, false);
+        if (icon.animation.numFrames >= 3)
+        {
+            icon.animation.add('losing', [2], 0, false, false);
+        }
+        icon.animation.add('winning', [1], 0, false, false);
+        
+    }
+}

@@ -1,0 +1,63 @@
+{
+  "version": "1.1.0",
+  "name": "Seek's Cool Deltarune Mod",
+  "assetPath": "speech_bubble_scdm",
+  "isPixel": true,
+  "flipX": false,
+  "flipY": false,
+  "offsets": [50, 370],
+  "scale": 1,
+
+  "text": {
+    "offsets": [-5000000000, 370],
+    "width": 1000,
+    "color": "#FFFFFF",
+    "fontFamily": "PhantomMuff 1.5",
+    "shadowColor": "#000000",
+    "shadowWidth": 2
+  },
+
+  "animations": [
+    {
+      "name": "enter",
+      "prefix": "Speech Bubble Normal Open0",
+      "frameIndices": [0,1,2,3,4],
+      "offsets": [0,0],
+      "frameRate": 24
+    },
+    {
+      "name": "idle",
+      "prefix": "speech bubble normal0",
+      "looped": true,
+      "offsets": [0, 0],
+      "frameRate": 24
+    },
+    {
+      "name": "exit",
+      "prefix": "Speech Bubble Normal Open0",
+      "offsets": [0, 0],
+      "frameIndices": [4, 3, 2, 1, 0],
+      "frameRate": 24
+    },
+    {
+      "name": "loudEnter",
+      "prefix": "speech bubble loud open",
+      "offsets": [-40, -75],
+      "frameRate": 24
+    },
+    {
+      "name": "loudIdle",
+      "prefix": "AHH speech bubble",
+      "looped": true,
+      "offsets": [-40, -75],
+      "frameRate": 24
+    },
+    {
+      "name": "loudExit",
+      "prefix": "speech bubble loud open",
+      "offsets": [-40, -75],
+      "frameIndices": [2, 1, 0],
+      "frameRate": 24
+    }
+  ]
+}

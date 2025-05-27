@@ -1,0 +1,89 @@
+{
+  "version": "1.0.0",
+  "name": "Rouxls Kaard",
+  "assetPath": "characters/Rouxls",
+  "startingAnimation": "idle",
+  "singTime": 4,
+  "flipX": false,
+  "isPixel": false,
+  "healthIcon": {
+    "id": "eth"
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "rouxls idle",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        226,
+        172
+      ],
+      "looped": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "rouxls left",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        259,
+        161
+      ],
+      "looped": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "rouxls down",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        197,
+        170
+      ],
+      "looped": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "rouxls up",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        244,
+        173
+      ],
+      "looped": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "rouxls right",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        251,
+        170
+      ],
+      "looped": false
+    },
+    {
+      "name": "worms",
+      "prefix": "rouxls worms",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        243,
+        167
+      ],
+      "looped": false
+    }
+  ],
+  "offsets": [
+    120,
+    60
+  ],
+  "cameraOffsets": [
+    -10,
+    -50
+  ],
+  "scale": 0.7
+}

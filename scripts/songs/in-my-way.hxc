@@ -1,0 +1,183 @@
+import flixel.tweens.FlxEase;
+import funkin.graphics.FunkinSprite;
+import flixel.tweens.FlxTween;
+import funkin.Paths;
+import funkin.play.cutscene.dialogue.DialogueBox;
+import funkin.modding.module.Module;
+import funkin.util.tools.StringTools;
+import funkin.util.Constants;
+import funkin.play.PlayState;
+import funkin.play.PlayStatePlaylist;
+import funkin.play.song.Song;
+import flixel.ui.FlxBar;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.util.FlxTimer;
+import funkin.audio.FunkinSound;
+import funkin.save.Save;
+import openfl.Lib;
+import lime.ui.Window;
+import funkin.util.WindowUtil;
+import funkin.Conductor;
+
+import Date;
+
+class InMyWaySong extends Song {
+  var hasPlayedCutscene:Bool;
+  var playAlts:Bool;
+  var hasPlayedEndingCutscene:Bool;
+
+	public function new() {
+		super('in-my-way');
+	}
+
+  public override function onCountdownStart(event:CountdownScriptEvent):Void {
+		super.onCountdownStart(event);
+
+    if (PlayState.instance.isChartingMode) {
+      // Skip cutscene logic in charting mode to prevent softlock.
+      hasPlayedCutscene = true;
+      return;
+    }
+
+    if (!PlayStatePlaylist.isStoryMode) {
+      hasPlayedCutscene = true;
+      hasPlayedEndingCutscene = true;
+    } else if (!hasPlayedCutscene) {
+      trace('Pausing countdown to play cutscene.');
+
+      hasPlayedCutscene = true;
+
+      event.cancel(); // CANCEL THE COUNTDOWN!
+
+      PlayState.instance.isInCutscene = true;
+
+      transitionToDialogue();
+    }
+	}
+  
+
+  function transitionToDialogue() {
+    trace('Transitioning to dialogue.');
+
+    PlayState.instance.camCutscene.visible = true;
+
+    startDialogue();
+  }
+
+  function startDialogue() {
+    PlayState.instance.startConversation('in-my-way');
+  }
+
+  /**
+   * Don't replay the cutscene between restarts.
+   */
+  function onSongRetry(event:ScriptEvent)
+  {
+    super.onSongRetry(event);
+
+    hasPlayedCutscene = true;
+  }
+
+  /**
+   * Replay the cutscene after leaving the song.
+   */
+  override function onCreate(event:ScriptEvent):Void
+  {
+    super.onCreate(event);
+    
+    WindowUtil.setWindowTitle("Friday Night Funkin': V-!@!$ Engine");
+
+    hasPlayedCutscene = false;
+  }
+
+  public override function onDialogueEnd() {
+    // We may need to wait for the outro to play.
+    Countdown.performCountdown();
+  }
+
+  function onStepHit(event:SongTimeScriptEvent){
+    super.onStepHit(event);
+
+    if (event.step > 169 && event.step < 688){
+      playAlts = true;
+      PlayState.instance.currentStage.getDad().idleSuffix = '-alt';
+    } else{
+      playAlts = false;
+      PlayState.instance.currentStage.getDad().idleSuffix = '';
+    }
+    if (event.step == 691){
+      PlayState.instance.currentStage.getDad().forceAnimationForDuration('stop', 3) ;
+    }
+  }
+
+  function onNoteHit(event:HitNoteScriptEvent){
+    super.onNoteHit(event);
+    if (PlayState.instance.opponentStrumline.getNotesMayHit().contains(event.note))
+							{
+								
+                if (PlayState.instance.health > 0.5){
+                  PlayState.instance.health -=0.01;
+                }
+
+                if (playAlts == true){
+                  switch(event.note.direction)
+								{
+									case 0:
+										  PlayState.instance.currentStage.getDad().playAnimation('singLEFT-alt');
+									case 1:
+										  PlayState.instance.currentStage.getDad().playAnimation('singDOWN-alt');
+									case 2:
+										  PlayState.instance.currentStage.getDad().playAnimation('singUP-alt');
+									case 3:
+										  PlayState.instance.currentStage.getDad().playAnimation('singRIGHT-alt');
+										}
+                }
+                
+								}
+    if (event.note.noteData.kind == 'Atk'){
+      trace('Susie Attacked Lancer! Subtracting HP...');
+      
+      PlayState.instance.camGame.shake(0.05,1);
+      PlayState.instance.currentStage.getDad().playAnimation('atk', true, true);
+      if(PlayState.instance.health > 1){
+        PlayState.instance.health -= 0.6;
+      }
+    }
+  }
+
+
+  function onSongEnd(event){
+    super.onSongEnd(event);
+    super.onSongEnd(event);
+		if (!hasPlayedEndingCutscene) {
+			hasPlayedEndingCutscene = true;
+			event.cancel(); // CANCEL THE COUNTDOWN!
+			Conductor.instance.forceBPM(0);
+
+			PlayState.instance.currentStage.pause();
+			PlayState.instance.disableKeys = false;
+			PlayState.instance.startConversation('in-my-way-end');
+
+			PlayState.instance.currentConversation.completeCallback = onEndConversationComplete;
+		}
+		else
+		{
+			Conductor.instance.forceBPM(null);
+		}
+  }
+  function onEndConversationComplete()
+	{
+		isInCutscene = false;
+    WindowUtil.setWindowTitle("Friday Night Funkin': V-Slice Engine");
+    	if (PlayState.instance.currentConversation != null)
+    	{
+      		PlayState.instance.currentConversation.kill();
+      		PlayState.instance.remove(PlayState.instance.currentConversation);
+      		PlayState.instance.currentConversation = null;
+    	}
+
+      	PlayState.instance.endSong();
+	}
+
+}

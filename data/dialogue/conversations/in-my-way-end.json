@@ -1,0 +1,134 @@
+{
+  "version": "1.0.0",
+
+  "backdrop": {
+    "type": "solid",
+    "fadeTime": 2.0,
+    "color": "#BFB3DFD8"
+  },
+
+  "music": {
+    "asset": null,
+    "fadeTime": 2.0,
+    "looped": true
+  },
+
+  "outro": {
+    "type": "fade",
+    "fadeTime": 1.0
+  },
+
+  "dialogue": [
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "left",
+      "box": "SCDMDialogue",
+      "boxAnimation": "enter",
+
+      "text": ["Susie..... you.... you missed..."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "sad",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+      "text": ["..."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "sad",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["I really don't wanna kill you, man."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "sad",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Just move.", "Please."]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "down",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": [ "But if I do, you guys will fight my dad...", "and...", "and you'll kill each other."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "sad",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["I... uhm... If that's the case,", "we won't kill him."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["We'll just.... ","have a chat and talk it out, y'know?"," I promise."]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "down",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["I...", "don't think my dad would like that..."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Lancer, c'mon! We're a team, remember? Nothing can stop us, fighting or not!"]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["I guess you're right, heh."]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "left",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Um... Susie, one more thing..."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "sad",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Yeah?"]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Are we still friends?"]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Huh? Of course, dude, haha"]
+    }
+  ]
+}

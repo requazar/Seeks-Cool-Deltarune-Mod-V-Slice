@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "V.S. SUSIE",
+  "titleAsset": "storymenu/titles/sus",
+  "props": [
+    {
+      "assetPath": "storymenu/props/menu_susie",
+      "scale": 1.05,
+      "offsets": [0, 61]
+    }
+  ],
+  "background": "#FF2043",
+  "songs": ["in-my-way"]
+}

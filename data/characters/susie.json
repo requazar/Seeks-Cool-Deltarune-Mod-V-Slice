@@ -1,0 +1,155 @@
+{
+  "version": "1.0.0",
+  "name": "susie",
+  "assetPath": "characters/susie",
+  "startingAnimation": "idle",
+  "singTime": 4,
+  "flipX": false,
+  "isPixel": false,
+  "healthIcon": {
+    "id": "susie"
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "susie idle0",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        166,
+        102
+      ],
+      "looped": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "susie left0",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        210,
+        101
+      ],
+      "looped": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "susie down0",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        176,
+        95
+      ],
+      "looped": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "susie up0",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        162,
+        96
+      ],
+      "looped": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "susie right0",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        182,
+        99
+      ],
+      "looped": false
+    },
+    {
+      "name": "atk",
+      "prefix": "susie atk",
+      "frameIndices": [],
+      "frameRate": 15,
+      "offsets": [
+        120,
+        100
+      ],
+      "looped": false
+    },
+    {
+      "name": "stop",
+      "prefix": "susie stop",
+      "frameIndices": [],
+      "frameRate": 10,
+      "offsets": [
+        158,
+        99
+      ],
+      "looped": false
+    },
+    {
+      "name": "idle-alt",
+      "prefix": "susie idle-alt",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        164,
+        98
+      ],
+      "looped": false
+    },
+    {
+      "name": "singLEFT-alt",
+      "prefix": "susie left-alt",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        191,
+        100
+      ],
+      "looped": false
+    },
+    {
+      "name": "singDOWN-alt",
+      "prefix": "susie down-alt",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        180,
+        90
+      ],
+      "looped": false
+    },
+    {
+      "name": "singUP-alt",
+      "prefix": "susie up-alt",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        150,
+        100
+      ],
+      "looped": false
+    },
+    {
+      "name": "singRIGHT-alt",
+      "prefix": "susie right-alt",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        188,
+        98
+      ],
+      "looped": false
+    }
+  ],
+  "offsets": [
+    -120,
+    -300
+  ],
+  "cameraOffsets": [
+    -40,
+    170
+  ],
+  "scale": 0.9
+}

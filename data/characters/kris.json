@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "name": "Kris(Normal)",
+  "assetPath": "characters/kris",
+  "startingAnimation": "idle",
+  "singTime": 4,
+  "flipX": true,
+  "isPixel": false,
+  "healthIcon": {
+    "id": "ralsei-kris"
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "kris idle",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        226,
+        172
+      ],
+      "looped": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "kris left",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        270,
+        171
+      ],
+      "looped": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "kris down",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        253,
+        173
+      ],
+      "looped": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "kris up",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        231,
+        176
+      ],
+      "looped": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "kris right",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        232,
+        171
+      ],
+      "looped": false
+    }
+  ],
+  "offsets": [
+    50,
+    30
+  ],
+  "cameraOffsets": [
+    -420,
+    -150
+  ],
+  "scale": 0.8
+}

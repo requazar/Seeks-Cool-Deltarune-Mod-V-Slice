@@ -1,0 +1,14 @@
+{
+  "version": "1.0.0",
+  "name": "IT'S PRONOUNCED RULES",
+  "titleAsset": "storymenu/titles/rouxls",
+  "props": [
+    {
+      "assetPath": "storymenu/props/menu_rouxls",
+      "scale": 1.05,
+      "offsets": [0, 61]
+    }
+  ],
+  "background": "#FF2043",
+  "songs": ["chips-ahoyeth"]
+}

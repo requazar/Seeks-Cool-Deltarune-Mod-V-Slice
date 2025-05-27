@@ -1,0 +1,22 @@
+import funkin.play.character.SparrowCharacter;
+import funkin.play.character.CharacterType;
+import funkin.play.PlayState;
+import flixel.math.FlxRandom;
+import flixel.FlxG;
+
+class LancerJailCellCharacter extends SparrowCharacter {
+	function new() {
+		super('lancer');
+	}
+
+	public override function onNoteHit(event:HitNoteScriptEvent)
+	{
+		if (event.note.noteData.kind == "Atk") {
+			// Override the hit note animation.
+			super.playAnimation('ouch', true, true);
+            PlayState.instance.currentStage.getDad().playAnimation('atk', false, false);
+		}else{
+			super.onNoteHit(event);
+		}
+	}
+}

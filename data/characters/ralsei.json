@@ -1,0 +1,78 @@
+{
+  "version": "1.0.0",
+  "name": "Ralsei(Normal)",
+  "assetPath": "characters/ralsei",
+  "startingAnimation": "idle",
+  "singTime": 4,
+  "flipX": false,
+  "isPixel": false,
+  "healthIcon": {
+    "id": "ralsei-kris"
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "prefix": "ralsei idle",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        226,
+        172
+      ],
+      "looped": false
+    },
+    {
+      "name": "singLEFT",
+      "prefix": "ralsei left",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        240,
+        179
+      ],
+      "looped": false
+    },
+    {
+      "name": "singDOWN",
+      "prefix": "ralsei down",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        253,
+        174
+      ],
+      "looped": false
+    },
+    {
+      "name": "singUP",
+      "prefix": "ralsei up",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        231,
+        176
+      ],
+      "looped": false
+    },
+    {
+      "name": "singRIGHT",
+      "prefix": "ralsei right",
+      "frameIndices": [],
+      "frameRate": 12,
+      "offsets": [
+        261,
+        170
+      ],
+      "looped": false
+    }
+  ],
+  "offsets": [
+    50,
+    0
+  ],
+  "cameraOffsets": [
+    110,
+    -50
+  ],
+  "scale": 0.9
+}

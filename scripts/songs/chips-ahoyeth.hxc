@@ -1,0 +1,166 @@
+import flixel.tweens.FlxEase;
+import funkin.graphics.FunkinSprite;
+import flixel.tweens.FlxTween;
+import funkin.Paths;
+import funkin.play.cutscene.dialogue.DialogueBox;
+import funkin.modding.module.Module;
+import funkin.util.tools.StringTools;
+import funkin.util.Constants;
+import funkin.play.PlayState;
+import funkin.play.PlayStatePlaylist;
+import funkin.play.song.Song;
+import flixel.ui.FlxBar;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.util.FlxTimer;
+import funkin.audio.FunkinSound;
+import funkin.save.Save;
+import openfl.Lib;
+import lime.ui.Window;
+import funkin.util.WindowUtil;
+import funkin.Conductor;
+
+import Date;
+
+class ChipsAhoyethSong extends Song {
+  var hasPlayedCutscene:Bool;
+  var hasPlayedEndingCutscene:Bool;
+
+	public function new() {
+		super('chips-ahoyeth');
+	}
+
+  public override function onCountdownStart(event:CountdownScriptEvent):Void {
+		super.onCountdownStart(event);
+
+    if (PlayState.instance.isChartingMode) {
+      // Skip cutscene logic in charting mode to prevent softlock.
+      hasPlayedCutscene = true;
+      hasPlayedEndingCutscene = true;
+      return;
+    }
+
+    if (!PlayStatePlaylist.isStoryMode) {
+      hasPlayedCutscene = true;
+      hasPlayedEndingCutscene = true;
+    } else if (!hasPlayedCutscene) {
+      trace('Pausing countdown to play cutscene.');
+
+      hasPlayedCutscene = true;
+
+      event.cancel(); // CANCEL THE COUNTDOWN!
+
+      PlayState.instance.isInCutscene = true;
+
+      transitionToDialogue();
+    }
+	}
+  
+
+  function transitionToDialogue() {
+    trace('Transitioning to dialogue.');
+
+    PlayState.instance.camCutscene.visible = true;
+
+    startDialogue();
+  }
+
+  function startDialogue() {
+    PlayState.instance.startConversation('in-my-way');
+  }
+
+  /**
+   * Don't replay the cutscene between restarts.
+   */
+  function onSongRetry(event:ScriptEvent)
+  {
+    super.onSongRetry(event);
+
+    hasPlayedCutscene = true;
+  }
+
+  /**
+   * Replay the cutscene after leaving the song.
+   */
+  override function onCreate(event:ScriptEvent):Void
+  {
+    super.onCreate(event);
+    
+    WindowUtil.setWindowTitle("Freaketh on thine friday evening: V-Slice Engineth");
+
+    hasPlayedCutscene = false;
+  }
+
+  public override function onDialogueEnd() {
+    // We may need to wait for the outro to play.
+    Countdown.performCountdown();
+  }
+
+  function onStepHit(event:SongTimeScriptEvent){
+    super.onStepHit(event);
+    if (event.step == 280){
+      PlayState.instance.currentStage.getNamedProp('Queen2').animation.play("lmao"); //This is STUPID!!! Base game fnf doesn't have MultiSparrow support as of writing this, so I'm forced to make two props: Queen and Queen 2. -Requazar
+    }
+    if (event.step == 744){
+      PlayState.instance.currentStage.getNamedProp('Queen').animation.play('oh');
+    }
+  }
+
+
+
+  /*
+  *This override function doesn't fully make Ralsei sing instead of Kris. To see the other half of the "make Ralsei sing" code, check kris's kris.hxc script(scripts/characters/kris.hxc)
+  */
+  function onNoteHit(event:HitNoteScriptEvent){
+    if (event.note.noteData.kind == "ralsing"){
+      trace("Ralsei is singing this note!");
+      switch(event.note.direction){
+        case 0:
+          PlayState.instance.currentStage.getGirlfriend().playAnimation('singLEFT', true, true);
+        case 1:
+          PlayState.instance.currentStage.getGirlfriend().playAnimation('singDOWN', true, true);
+        case 2:
+          PlayState.instance.currentStage.getGirlfriend().playAnimation('singUP', true, true);
+        case 3:
+          PlayState.instance.currentStage.getGirlfriend().playAnimation('singRIGHT', true, true);
+      }
+      return;
+    }
+    super.onNoteHit(event);
+  }
+
+
+  function onSongEnd(event){
+    super.onSongEnd(event);
+    super.onSongEnd(event);
+		if (!hasPlayedEndingCutscene) {
+			hasPlayedEndingCutscene = true;
+			event.cancel(); // CANCEL THE COUNTDOWN!
+			Conductor.instance.forceBPM(0);
+
+			PlayState.instance.currentStage.pause();
+			PlayState.instance.disableKeys = false;
+			PlayState.instance.startConversation('in-my-way-end');
+
+			PlayState.instance.currentConversation.completeCallback = onEndConversationComplete;
+		}
+		else
+		{
+			Conductor.instance.forceBPM(null);
+		}
+  }
+  function onEndConversationComplete()
+	{
+		isInCutscene = false;
+    WindowUtil.setWindowTitle("Friday Night Funkin': V-Slice Engine"); //V-Slice my beloved
+    	if (PlayState.instance.currentConversation != null)
+    	{
+      		PlayState.instance.currentConversation.kill();
+      		PlayState.instance.remove(PlayState.instance.currentConversation);
+      		PlayState.instance.currentConversation = null;
+    	}
+
+      	PlayState.instance.endSong();
+	}
+
+}

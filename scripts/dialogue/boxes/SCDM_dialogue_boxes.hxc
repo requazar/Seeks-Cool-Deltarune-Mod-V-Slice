@@ -1,0 +1,110 @@
+import flixel.util.FlxTimer;
+
+import funkin.Paths;
+import funkin.audio.FunkinSound;
+import funkin.graphics.FunkinSprite;
+import funkin.play.PlayState;
+import funkin.play.cutscene.dialogue.ConversationState;
+import funkin.play.cutscene.dialogue.DialogueBox;
+import funkin.play.cutscene.dialogue.Speaker;
+
+import openfl.utils.Assets;
+
+import StringTools;
+
+class SCDMDialogueBox extends DialogueBox {
+	var icon:FunkinSprite;
+	var iconId:String = "";
+
+	function new()
+	{
+		super("SCDMDialogue");
+	}
+
+	override function onCreate(event)
+	{
+		super.onCreate(event);
+		//textDisplay.sounds = [FunkinSound.load(Paths.sound('lancer_talk'), 0.6), FunkinSound.load(Paths.sound('susie_talk'), 0.6) ];
+	}
+
+
+	override function onDialogueLine(event)
+	{
+		super.onDialogueLine(event);
+		var line = 0;
+
+		if (event.conversation.currentDialogueEntry != null)line = event.conversation.currentDialogueEntry;
+		if (event.conversation.currentDialogueLine + 1 >= event.conversation.currentDialogueLineCount) line += 1;
+		if (line >= event.conversation.currentDialogueEntryCount) line -= 1;
+		if (event.conversation._data.dialogue[line].speaker == 'imwsusie'){
+			textDisplay.sounds = [FunkinSound.load(Paths.sound('susie_talk'), 0.6) ];
+		} else if (event.conversation._data.dialogue[line].speaker == 'imwlancer'){
+			textDisplay.sounds = [FunkinSound.load(Paths.sound('lancer_talk'), 0.6) ];
+		}
+
+		FunkinSound.playOnce(Paths.sound('dialogueClose'), 0.2);
+	}
+
+	// This is STUPID but it works. Otherwise Macy's stuck on the left side of the screen at the start of Electromace for no reason.
+	override function onUpdate(event)
+	{
+		for (sprite in PlayState.instance.currentConversation)
+  		{
+  			if (Std.isOfType(sprite, Speaker))
+  			{
+  				sprite.applyAnimationOffsets(sprite.animation.name);
+  				sprite.x = sprite.globalOffsets[0] + sprite.animOffsets[0];
+  				sprite.y = sprite.globalOffsets[1] + sprite.animOffsets[1];
+  			}
+  		}
+  		super.onUpdate(event);
+	}
+
+	override function playAnimation(name, restart, reverse)
+	{
+		super.playAnimation(name, restart, reverse);
+
+		// Base Funkin's dialogue code is VERY odd when dealing with positioning, especially with animations that have offsets. This fixes those! Yay!
+		boxSprite.x = globalOffsets[0] + animOffsets[0];
+		boxSprite.y = globalOffsets[1] + animOffsets[1];
+
+		textDisplay.screenCenter(0x01);
+		textDisplay.x += 50;
+		textDisplay.y = 485;
+	}
+
+	function onDialogueStart(event)
+	{
+		super.onDialogueStart(event);
+
+		for (sprite in PlayState.instance.currentConversation)
+  		{
+  			if (Std.isOfType(sprite, Speaker))
+  			{
+  				sprite.x = sprite.globalOffsets[0] + sprite.animOffsets[0];
+  				sprite.y = sprite.globalOffsets[1] + sprite.animOffsets[1];
+  			}
+  		}
+	}
+
+	public function onDialogueEnd(event:DialogueScriptEvent):Void {
+    	super.onDialogueEnd(event);
+    	// Play 'enter' in reverse
+    	this.textDisplay.visible = false;
+
+    	if (StringTools.startsWith(boxSprite.animation.curAnim.name, "loud")) playAnimation("loudExit", false);
+    	else playAnimation('exit', false);
+  	}
+
+	function onAnimationFinished(name:String):Void {
+		switch(name)
+		{
+			case 'enter':
+				playAnimation('idle', true);
+			case 'loudEnter':
+				playAnimation('loudIdle', true);
+			case "exit": boxSprite.visible = false;
+			case "loudExit": boxSprite.visible = false;
+		}
+	}
+}

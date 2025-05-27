@@ -1,0 +1,102 @@
+{
+  "version": "1.0.0",
+
+  "backdrop": {
+    "type": "solid",
+    "fadeTime": 2.0,
+    "color": "#BFB3DFD8"
+  },
+
+  "music": {
+    "asset": null,
+    "fadeTime": 2.0,
+    "looped": true
+  },
+
+  "outro": {
+    "type": "fade",
+    "fadeTime": 1.0
+  },
+
+  "dialogue": [
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "angry",
+      "box": "SCDMDialogue",
+      "boxAnimation": "enter",
+
+      "text": ["So.. you're the one who trapped us?"]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "sad",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+      "text": ["I thought we were a team."]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "left",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["B-But Susie, I..."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Nah, I get it. I get it, really."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Why would anyone wanna be friends with me anyway?"]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "left",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["N-No, that's not--"]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "angrier",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["SHUT UP. Get out of my way."]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "down",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["..."]
+    },
+    {
+      "speaker": "imwlancer",
+      "speakerAnimation": "down",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["No."]
+    },
+    {
+      "speaker": "imwsusie",
+      "speakerAnimation": "smile",
+      "box": "SCDMDialogue",
+      "boxAnimation": "idle",
+
+      "text": ["Heh... Alright. Then you leave me no choice."]
+    }
+  ]
+}
