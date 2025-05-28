@@ -68,7 +68,7 @@
 			"zIndex": 201,
 			"position": [
 				-1012,
-				-236
+				-136
 			],
 			"scale": [
 				0.8,
@@ -184,32 +184,32 @@
 			"zIndex": 100,
 			"position": [
 				300,
-				450
+				475
 			],
 			"cameraOffsets": [
-				-100,
+				-300,
 				0
 			]
 		},
 		"dad": {
 			"zIndex": 200,
 			"position": [
-				-789,
+				-839,
 				300
 			],
 			"cameraOffsets": [
-				170,
+				250,
 				30
 			]
 		},
 		"gf": {
 			"zIndex": 300,
 			"cameraOffsets": [
-				0,
-				0
+				-300,
+				-50
 			],
 			"position": [
-				0,
+				-100,
 				550
 			]
 		}
