@@ -101,6 +101,9 @@ class ChipsAhoyethSong extends Song {
     if (event.step == 280){
       PlayState.instance.currentStage.getNamedProp('Queen2').animation.play("lmao"); //This is STUPID!!! Base game fnf doesn't have MultiSparrow support as of writing this, so I'm forced to make two props: Queen and Queen 2. -Requazar
     }
+    if (event.step == 724){
+      PlayState.instance.currentStage.getDad().playAnimation('worms', true, true);
+    }
     if (event.step == 744){
       PlayState.instance.currentStage.getNamedProp('Queen').animation.play('oh');
     }
